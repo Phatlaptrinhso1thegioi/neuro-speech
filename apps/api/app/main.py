@@ -5,8 +5,10 @@ Binds to 127.0.0.1 (localhost only) per M2a specification.
 """
 
 import asyncio
-from fastapi import FastAPI, WebSocket
-from fastapi.responses import RedirectResponse
+from pathlib import Path
+from fastapi import FastAPI, WebSocket, HTTPException
+from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 from apps.api.app.api.v1.endpoints.datasets import router as datasets_router
@@ -68,11 +70,6 @@ async def ws_replay_route(websocket: WebSocket, session_id: str):
     await websocket_replay_endpoint(websocket, session_id)
 
 
-@app.get("/")
-def root():
-    return RedirectResponse(url="/docs")
-
-
 @app.get("/health")
 @app.get("/api/v1/health")
 def health():
@@ -81,3 +78,31 @@ def health():
         "prototype": "NEURO-SPEECH",
         "notice": "Research & Assistive-Technology Prototype — Not a certified medical diagnostic device."
     }
+
+
+# Frontend SPA and Static Assets integration
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+DIST_DIR = PROJECT_ROOT / "apps" / "web" / "dist"
+
+if DIST_DIR.exists() and (DIST_DIR / "assets").is_dir():
+    app.mount("/assets", StaticFiles(directory=str(DIST_DIR / "assets")), name="assets")
+
+    @app.get("/")
+    async def root():
+        index_file = DIST_DIR / "index.html"
+        if index_file.is_file():
+            return FileResponse(index_file)
+        return RedirectResponse(url="/docs")
+
+    @app.get("/{full_path:path}")
+    async def serve_spa(full_path: str):
+        if full_path.startswith("api/") or full_path in ("docs", "redoc", "openapi.json", "health"):
+            raise HTTPException(status_code=404, detail="Not Found")
+        target = DIST_DIR / full_path
+        if full_path and target.is_file():
+            return FileResponse(target)
+        return FileResponse(DIST_DIR / "index.html")
+else:
+    @app.get("/")
+    def root():
+        return RedirectResponse(url="/docs")
