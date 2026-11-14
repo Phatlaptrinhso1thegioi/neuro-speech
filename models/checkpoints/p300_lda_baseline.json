@@ -1,0 +1,66 @@
+{
+  "model_name": "p300_lda_baseline",
+  "algorithm": "Shrinkage Linear Discriminant Analysis (Ledoit-Wolf)",
+  "features": {
+    "epoch_window": [
+      -0.1,
+      0.8
+    ],
+    "analysis_window": [
+      0.1,
+      0.6
+    ],
+    "decimation_factor": 8,
+    "feature_dim": 240,
+    "channels": [
+      "Fz",
+      "Cz",
+      "Pz",
+      "Oz",
+      "P3",
+      "P4",
+      "PO7",
+      "PO8",
+      "FCz",
+      "C3",
+      "C4",
+      "CP3",
+      "CPz",
+      "CP4"
+    ],
+    "n_channels": 14
+  },
+  "training_dataset": {
+    "name": "BNCI 2014-009 Subject 1",
+    "candidate_id": 1,
+    "branch": "a",
+    "split": "Sessions 0 and 1 (Training)",
+    "n_train_epochs": 1152,
+    "n_targets": 192,
+    "n_nontargets": 960,
+    "raw_file": "A01S.mat",
+    "raw_sha256": "beddf78f1834ddef15553e32c9d18c46bc9b3fd244ef3a8e2fe362066dfb027d"
+  },
+  "cv_metrics_5fold": {
+    "roc_auc_mean": 0.9612,
+    "roc_auc_std": 0.0142,
+    "balanced_acc_mean": 0.8486,
+    "f1_mean": 0.7778
+  },
+  "inference_latency": {
+    "median_ms": 0.11493749999980096,
+    "p95_ms": 0.1181333000001672,
+    "p99_ms": 0.12000332999990704,
+    "n_runs": 100
+  },
+  "environment": {
+    "python_version": "3.9.6",
+    "os": "macOS-15.6.1-arm64-arm-64bit",
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "scikit_learn": "1.5.2"
+  },
+  "model_sha256": "f20b7ce237ac415e8a25c2a510d738dbfcc3f6c2cf6687eddbe4f8fb2761052e",
+  "created_at": "2026-11-08 17:29:23 UTC",
+  "random_seed": 42
+}

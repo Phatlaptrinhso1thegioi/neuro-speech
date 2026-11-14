@@ -1,0 +1,87 @@
+{
+  "dataset_name": "BNCI 2014-009 Subject 1",
+  "dataset_of_record": true,
+  "candidate_id": 1,
+  "branch": "a",
+  "license": "Public research (BNCI Horizon 2020 / Aric\u00f2 et al. 2013)",
+  "sampling_rate_hz": 256.0,
+  "matrix_dimensions": {
+    "rows": 6,
+    "columns": 6,
+    "total_cells": 36
+  },
+  "flash_timing": {
+    "flash_duration_ms": 125.0,
+    "isi_ms": 125.0,
+    "soa_ms": 250.0
+  },
+  "channels": {
+    "total_eeg": 14,
+    "names": [
+      "Fz",
+      "Cz",
+      "Pz",
+      "Oz",
+      "P3",
+      "P4",
+      "PO7",
+      "PO8",
+      "FCz",
+      "C3",
+      "C4",
+      "CP3",
+      "CPz",
+      "CP4"
+    ]
+  },
+  "splits": {
+    "train": {
+      "sessions": [
+        "session_0",
+        "session_1"
+      ],
+      "total_epochs": 1152,
+      "targets": 192,
+      "nontargets": 960
+    },
+    "held_out_test": {
+      "sessions": [
+        "session_2"
+      ],
+      "total_epochs": 576,
+      "targets": 96,
+      "nontargets": 480
+    }
+  },
+  "preprocessor": {
+    "filter_type": "Causal Butterworth SOS",
+    "order": 4,
+    "bandpass_hz": [
+      0.1,
+      20.0
+    ],
+    "epoch_window_s": [
+      -0.1,
+      0.8
+    ],
+    "baseline_window_s": [
+      -0.1,
+      0.0
+    ],
+    "units": "\u00b5V"
+  },
+  "files": {
+    "events_csv": {
+      "path": "p300_events.csv",
+      "sha256": "8fe65c1e8d5fe4cae8384e8cfeae0879a6840f828416f797963d45be4fd68527"
+    },
+    "signals_csv": {
+      "path": "eeg_signals.csv",
+      "sha256": "2a2fd1b075a8dffeb931690d378feadc77fa066c5d02cba7d9da962785dc7507"
+    },
+    "model_checkpoint": {
+      "path": "p300_lda_baseline.pkl",
+      "sha256": "f20b7ce237ac415e8a25c2a510d738dbfcc3f6c2cf6687eddbe4f8fb2761052e"
+    }
+  }
+}

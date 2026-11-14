@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Testing & Cache
+.pytest_cache/
+.hypothesis/
+
+# Storage & Databases
+storage/*.db
+storage/*.db-shm
+storage/*.db-wal
+!storage/.gitkeep
+
+# Scratch & Temp
+tmp_inspect/
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+*/.DS_Store
+
+# Data & Models (ignore large raw/processed files except manifests/metadata and baseline weights)
+datasets/raw/*
+!datasets/raw/.gitkeep
+datasets/processed/*.csv
+!datasets/processed/.gitkeep
+models/checkpoints/*.pkl
+models/checkpoints/*.pt
+!models/checkpoints/.gitkeep
+!models/checkpoints/p300_lda_baseline.pkl
+!models/checkpoints/nn_p300.pt
+
+# Node
+node_modules/

@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: neuro-speech-api
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./datasets:/app/datasets
+      - ./models/checkpoints:/app/models/checkpoints
+      - ./storage:/app/storage
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PROJECT_ROOT=/app
+      - JWT_SECRET_KEY=neuro_speech_production_docker_secret_key_change_me
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: neuro-speech-web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy

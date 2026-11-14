@@ -1,0 +1,11 @@
+{
+  "model_type": "CNNTransformerP300Net",
+  "checkpoint": "nn_p300.pt",
+  "sha256": "b0f3dd94fe637bd14411eadcd66b27e829bb656603f76b3d4ff1112f325dbd8d",
+  "test_roc_auc": 0.6320963541666667,
+  "test_balanced_acc": 0.6072916666666667,
+  "inference_latency_p50_ms": 1.8262079999997738,
+  "inference_latency_p95_ms": 2.02808925000042,
+  "training_time_s": 2.371043958,
+  "saved_at": "2026-11-08T18:21:13Z"
+}

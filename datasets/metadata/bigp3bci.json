@@ -1,0 +1,74 @@
+{
+  "dataset_name": "bigP3BCI",
+  "candidate_id": 2,
+  "subject": "A_01",
+  "study": "StudyA",
+  "paradigm": "Row/Column Speller (RC)",
+  "file_count": 10,
+  "total_size_mb": 78.397,
+  "source": "https://physionet.org/content/bigp3bci/1.0.0/",
+  "license": "Creative Commons Attribution 4.0 International (CC-BY 4.0)",
+  "files": [
+    {
+      "filename": "A_01_SE001_RC_Test06.edf",
+      "relative_path": "bigP3BCI-data/StudyA/A_01/SE001/Test/RC/A_01_SE001_RC_Test06.edf",
+      "size_bytes": 8006070,
+      "sha256": "916426595eaa54589e0e86138823b313bcb4a9d8e8b206ba0fc504503846a2a6"
+    },
+    {
+      "filename": "A_01_SE001_RC_Test07.edf",
+      "relative_path": "bigP3BCI-data/StudyA/A_01/SE001/Test/RC/A_01_SE001_RC_Test07.edf",
+      "size_bytes": 8006070,
+      "sha256": "ce84306b7de918324a5d76e69da5ba4919d4d8b6e2075d4ead691a827d5ac42a"
+    },
+    {
+      "filename": "A_01_SE001_RC_Test08.edf",
+      "relative_path": "bigP3BCI-data/StudyA/A_01/SE001/Test/RC/A_01_SE001_RC_Test08.edf",
+      "size_bytes": 8006070,
+      "sha256": "019cd7ca24a41f30f24f3350024b991c2ff3a336e354ae2124e78a145076137a"
+    },
+    {
+      "filename": "A_01_SE001_RC_Test09.edf",
+      "relative_path": "bigP3BCI-data/StudyA/A_01/SE001/Test/RC/A_01_SE001_RC_Test09.edf",
+      "size_bytes": 9078582,
+      "sha256": "1ede428270fad90a164dff8b3b6fecb2763008730c46c83243c44a944d4738f2"
+    },
+    {
+      "filename": "A_01_SE001_RC_Test10.edf",
+      "relative_path": "bigP3BCI-data/StudyA/A_01/SE001/Test/RC/A_01_SE001_RC_Test10.edf",
+      "size_bytes": 8006070,
+      "sha256": "cee9656cfb06f359eb8e13ad8933b8f58434f1c983981114d6b066d0063523be"
+    },
+    {
+      "filename": "A_01_SE001_RC_Train01.edf",
+      "relative_path": "bigP3BCI-data/StudyA/A_01/SE001/Train/RC/A_01_SE001_RC_Train01.edf",
+      "size_bytes": 8006070,
+      "sha256": "f316f2917052dd5ccbbbfad6ebb2b13ef46b415c8b8f5183154d72614a9ece61"
+    },
+    {
+      "filename": "A_01_SE001_RC_Train02.edf",
+      "relative_path": "bigP3BCI-data/StudyA/A_01/SE001/Train/RC/A_01_SE001_RC_Train02.edf",
+      "size_bytes": 8006070,
+      "sha256": "5390486bcbf53a17ae8cb6cb882cdbe55cd01df0f48241653baecfefa0d5e14a"
+    },
+    {
+      "filename": "A_01_SE001_RC_Train03.edf",
+      "relative_path": "bigP3BCI-data/StudyA/A_01/SE001/Train/RC/A_01_SE001_RC_Train03.edf",
+      "size_bytes": 8006070,
+      "sha256": "2c4c824fa24590904e6aadb4cdc74d61108f55e5d1a9157786f5aa28e666ecea"
+    },
+    {
+      "filename": "A_01_SE001_RC_Train04.edf",
+      "relative_path": "bigP3BCI-data/StudyA/A_01/SE001/Train/RC/A_01_SE001_RC_Train04.edf",
+      "size_bytes": 9078582,
+      "sha256": "844c435cd2a6a82dea732202d92b45de09b8ef720e597f7117931cfce08e5996"
+    },
+    {
+      "filename": "A_01_SE001_RC_Train05.edf",
+      "relative_path": "bigP3BCI-data/StudyA/A_01/SE001/Train/RC/A_01_SE001_RC_Train05.edf",
+      "size_bytes": 8006070,
+      "sha256": "3eed98cf77e623d91dd466e641a7bc82d6d253c3eee75b3ffc992003a6e12ad7"
+    }
+  ],
+  "download_status": "SUCCESS"
+}
