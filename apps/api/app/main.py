@@ -6,6 +6,7 @@ Binds to 127.0.0.1 (localhost only) per M2a specification.
 
 import asyncio
 from fastapi import FastAPI, WebSocket
+from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from apps.api.app.api.v1.endpoints.datasets import router as datasets_router
@@ -65,6 +66,11 @@ async def on_startup():
 @app.websocket("/api/v1/ws/replay/{session_id}")
 async def ws_replay_route(websocket: WebSocket, session_id: str):
     await websocket_replay_endpoint(websocket, session_id)
+
+
+@app.get("/")
+def root():
+    return RedirectResponse(url="/docs")
 
 
 @app.get("/health")
