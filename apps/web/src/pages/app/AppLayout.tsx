@@ -36,6 +36,7 @@ import { useLanguage } from '../../hooks/useLanguage';
 import { useTheme } from '../../hooks/useTheme';
 import { useToast } from '../../hooks/useToast';
 import { ConfirmModal } from '../../components/common/ConfirmModal';
+import { speakVietnamese, getVietnameseVoice } from '../../utils/tts';
 
 export const AppLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -141,16 +142,14 @@ export const AppLayout: React.FC = () => {
   };
 
   const handleQuickVoiceTest = () => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const msg = isVi
-        ? 'Hệ thống NEURO-SPEECH đang hoạt động ổn định và sẵn sàng hỗ trợ bệnh nhân.'
-        : 'NEURO-SPEECH clinical system is online and ready to assist the patient.';
-      const utter = new SpeechSynthesisUtterance(msg);
-      utter.lang = isVi ? 'vi-VN' : 'en-US';
-      utter.rate = 0.95;
-      window.speechSynthesis.speak(utter);
-      toast.success(isVi ? 'Đã phát âm kiểm tra hệ thống TTS.' : 'Playing TTS voice check.');
+    const msg = isVi
+      ? 'Hệ thống NEURO-SPEECH đang hoạt động ổn định và sẵn sàng hỗ trợ bệnh nhân.'
+      : 'NEURO-SPEECH clinical system is online and ready to assist the patient.';
+    const success = speakVietnamese(msg);
+    if (success) {
+      const viVoice = getVietnameseVoice();
+      const voiceInfo = viVoice ? ` [${viVoice.name}]` : '';
+      toast.success(isVi ? `Đã phát âm kiểm tra hệ thống TTS.${voiceInfo}` : `Playing TTS voice check.${voiceInfo}`);
     } else {
       toast.warning(isVi ? 'Trình duyệt không hỗ trợ Web Speech TTS.' : 'Browser does not support Web Speech TTS.');
     }

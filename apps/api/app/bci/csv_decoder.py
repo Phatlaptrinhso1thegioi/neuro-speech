@@ -135,6 +135,24 @@ def decode_p300_csv(
     clean_raw_spaced = raw_string.replace("_", " ")
     telex_vietnamese = VietnameseTelexEngine.parse_text(clean_raw_spaced)
 
+    # Automatically restore Vietnamese diacritics for clinical vocabulary
+    # so Web Speech TTS speaks full authentic Vietnamese tones
+    CLINICAL_VI_MAP = {
+        "TOI": "TÔI", "MUON": "MUỐN", "UONG": "UỐNG", "NUOC": "NƯỚC",
+        "AN": "ĂN", "COM": "CƠM", "CHAO": "CHÁO", "SUA": "SỮA", "THUOC": "THUỐC",
+        "TRO": "TRỢ", "GIUP": "GIÚP", "KHAN": "KHẨN", "CAP": "CẤP",
+        "DI": "ĐI", "VE": "VỆ", "SINH": "SINH", "CAM": "CẢM", "ON": "ƠN",
+        "BAC": "BÁC", "SI": "SĨ", "XIN": "XIN", "CHAO": "CHÀO",
+        "HOI": "HỘI", "DONG": "ĐỒNG", "DAU": "ĐAU", "MET": "MỆT",
+        "LANH": "LẠNH", "NONG": "NÓNG", "NGUA": "NGỨA", "KHO": "KHÓ", "THO": "THỞ",
+        "NGU": "NGỦ", "NGHI": "NGHỈ", "BAN": "BẠN", "EM": "EM", "ANH": "ANH", "CHI": "CHỊ"
+    }
+    tokens = telex_vietnamese.split()
+    if tokens:
+        new_tokens = [CLINICAL_VI_MAP.get(tok.upper(), tok) if tok.upper() == tok else tok for tok in tokens]
+        if any(nt != t for nt, t in zip(new_tokens, tokens)):
+            telex_vietnamese = " ".join(new_tokens)
+
     t_elapsed = (time.perf_counter() - t_start) * 1000.0
 
     # Extract EEG waveform preview for visual confirmation (Principle 1 & 5)

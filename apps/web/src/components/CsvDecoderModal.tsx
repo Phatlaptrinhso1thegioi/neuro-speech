@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '../hooks/useToast';
 import { useLanguage } from '../hooks/useLanguage';
+import { speakVietnamese, getVietnameseVoice } from '../utils/tts';
 
 export interface CsvDecodeDetail {
   char_index: number;
@@ -135,13 +136,13 @@ export const CsvDecoderModal: React.FC<CsvDecoderModalProps> = ({
   };
 
   const handleSpeak = (text: string) => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = isVi ? 'vi-VN' : 'en-US';
-      utterance.rate = 0.95;
-      window.speechSynthesis.speak(utterance);
-      toast.info(isVi ? `Đang phát âm: "${text}"` : `Speaking: "${text}"`);
+    const success = speakVietnamese(text);
+    if (success) {
+      const viVoice = getVietnameseVoice();
+      const voiceInfo = viVoice ? ` [${viVoice.name}]` : '';
+      toast.info(isVi ? `Đang phát âm: "${text}"${voiceInfo}` : `Speaking: "${text}"${voiceInfo}`);
+    } else {
+      toast.warning(isVi ? 'Trình duyệt chưa hỗ trợ Web Speech TTS.' : 'Browser does not support Web Speech TTS.');
     }
   };
 

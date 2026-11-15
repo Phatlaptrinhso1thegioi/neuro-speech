@@ -8,6 +8,7 @@ import { Settings, Globe, Volume2, Sun, Moon, Save } from 'lucide-react';
 import { useToast } from '../../hooks/useToast';
 import { useLanguage } from '../../hooks/useLanguage';
 import { useTheme } from '../../hooks/useTheme';
+import { speakVietnamese, getVietnameseVoice } from '../../utils/tts';
 
 export const SettingsPage: React.FC = () => {
   const toast = useToast();
@@ -17,17 +18,15 @@ export const SettingsPage: React.FC = () => {
   const [saving, setSaving] = useState(false);
 
   const handleTestSpeech = () => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const text =
-        language === 'vi'
-          ? 'Kiểm tra âm thanh hệ thống NEURO-SPEECH thành công.'
-          : 'NEURO-SPEECH audio synthesis test completed successfully.';
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = language === 'vi' ? 'vi-VN' : 'en-US';
-      utterance.rate = ttsSpeed;
-      window.speechSynthesis.speak(utterance);
-      toast.info(language === 'vi' ? 'Đang kiểm tra phát âm thanh...' : 'Testing audio playback...');
+    const text =
+      language === 'vi'
+        ? 'Kiểm tra âm thanh hệ thống NEURO-SPEECH thành công.'
+        : 'NEURO-SPEECH audio synthesis test completed successfully.';
+    const success = speakVietnamese(text, { rate: ttsSpeed });
+    if (success) {
+      const viVoice = getVietnameseVoice();
+      const voiceInfo = viVoice ? ` [${viVoice.name}]` : '';
+      toast.info(language === 'vi' ? `Đang phát âm thanh mẫu...${voiceInfo}` : `Testing audio playback...${voiceInfo}`);
     } else {
       toast.warning(language === 'vi' ? 'Trình duyệt chưa hỗ trợ Web Speech TTS.' : 'Browser does not support Web Speech TTS.');
     }

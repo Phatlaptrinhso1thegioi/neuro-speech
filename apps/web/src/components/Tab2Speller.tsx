@@ -23,6 +23,7 @@ import { SuggestionStrip } from './SuggestionStrip';
 import { FourWayPanel } from './FourWayPanel';
 import { SpellerState, FourWayEntry } from '../types';
 import { useToast } from '../hooks/useToast';
+import { getVietnameseVoice } from '../utils/tts';
 import { useLanguage } from '../hooks/useLanguage';
 import { ConfirmModal } from './common/ConfirmModal';
 
@@ -71,7 +72,7 @@ export const Tab2Speller: React.FC<Tab2SpellerProps> = ({
       const loadVoices = () => {
         const voices = window.speechSynthesis.getVoices();
         setAvailableVoices(voices);
-        const viVoice = voices.find((v) => v.lang.startsWith('vi') || v.name.toLowerCase().includes('viet'));
+        const viVoice = getVietnameseVoice() || voices.find((v) => v.lang.startsWith('vi') || v.name.toLowerCase().includes('viet'));
         if (viVoice) {
           setSelectedVoiceUri(viVoice.voiceURI);
         }
@@ -95,6 +96,7 @@ export const Tab2Speller: React.FC<Tab2SpellerProps> = ({
 
       // Selected voice or fallback
       const chosenVoice = availableVoices.find((v) => v.voiceURI === selectedVoiceUri) ||
+        getVietnameseVoice() ||
         availableVoices.find((v) => v.lang.startsWith('vi'));
 
       if (chosenVoice) {

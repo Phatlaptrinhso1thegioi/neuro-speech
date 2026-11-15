@@ -38,6 +38,7 @@ import { useToast } from '../../hooks/useToast';
 import { api } from '../../services/api';
 import { CommunicationHistoryItem, EEGSessionItem } from '../../types';
 import { CsvDecoderModal } from '../../components/CsvDecoderModal';
+import { speakVietnamese, getVietnameseVoice } from '../../utils/tts';
 
 type FeedCategory = 'all' | 'comm' | 'survival' | 'session' | 'system';
 
@@ -116,13 +117,11 @@ export const UserDashboardPage: React.FC = () => {
   }, []);
 
   const handleSpeakText = (text: string) => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = isVi ? 'vi-VN' : 'en-US';
-      utterance.rate = 0.95;
-      window.speechSynthesis.speak(utterance);
-      toast.info(isVi ? `Đang phát âm qua loa: "${text}"` : `Speaking aloud: "${text}"`);
+    const success = speakVietnamese(text);
+    if (success) {
+      const viVoice = getVietnameseVoice();
+      const voiceInfo = viVoice ? ` [${viVoice.name}]` : '';
+      toast.info(isVi ? `Đang phát âm qua loa: "${text}"${voiceInfo}` : `Speaking aloud: "${text}"${voiceInfo}`);
     } else {
       toast.warning(
         isVi ? 'Trình duyệt chưa hỗ trợ Web Speech TTS.' : 'Browser does not support Web Speech TTS.'

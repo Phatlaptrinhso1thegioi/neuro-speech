@@ -16,6 +16,7 @@ import { api } from '../../services/api';
 import { useToast } from '../../hooks/useToast';
 import { useLanguage } from '../../hooks/useLanguage';
 import { CommunicationHistoryItem } from '../../types';
+import { speakVietnamese, getVietnameseVoice } from '../../utils/tts';
 
 export const HistoryPage: React.FC = () => {
   const toast = useToast();
@@ -52,13 +53,11 @@ export const HistoryPage: React.FC = () => {
   }, [modeFilter]);
 
   const handleSpeak = (text: string) => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = language === 'vi' ? 'vi-VN' : 'en-US';
-      utterance.rate = 0.95;
-      window.speechSynthesis.speak(utterance);
-      toast.info(language === 'vi' ? `Đang phát âm lại: "${text}"` : `Speaking: "${text}"`);
+    const success = speakVietnamese(text);
+    if (success) {
+      const viVoice = getVietnameseVoice();
+      const voiceInfo = viVoice ? ` [${viVoice.name}]` : '';
+      toast.info(language === 'vi' ? `Đang phát âm lại: "${text}"${voiceInfo}` : `Speaking: "${text}"${voiceInfo}`);
     } else {
       toast.warning(language === 'vi' ? 'Trình duyệt chưa hỗ trợ phát âm TTS.' : 'Browser does not support Web Speech TTS.');
     }

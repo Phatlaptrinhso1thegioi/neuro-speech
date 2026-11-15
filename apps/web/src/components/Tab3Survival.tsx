@@ -21,6 +21,7 @@ import {
   Radio
 } from 'lucide-react';
 import { api } from '../services/api';
+import { speakVietnamese } from '../utils/tts';
 
 export interface SurvivalPhraseItem {
   slot: string;
@@ -117,27 +118,12 @@ export const Tab3Survival: React.FC<Tab3SurvivalProps> = ({
   // Browser SpeechSynthesis
   const speakPhrase = (text: string) => {
     if (!text || !text.trim()) return;
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      const voices = window.speechSynthesis.getVoices();
-      const viVoice = voices.find((v) => v.lang.startsWith('vi') || v.name.toLowerCase().includes('viet'));
-      if (viVoice) {
-        utterance.voice = viVoice;
-        utterance.lang = viVoice.lang;
-      } else {
-        utterance.lang = 'vi-VN';
-      }
-      utterance.rate = 0.95;
-      utterance.onstart = () => setSpeakingStatus(`Phát âm (TTS): "${text}"`);
-      utterance.onend = () => {
-        setSpeakingStatus(null);
-      };
-      utterance.onerror = () => {
-        setSpeakingStatus(null);
-      };
-      window.speechSynthesis.speak(utterance);
-    }
+    speakVietnamese(text, {
+      rate: 0.95,
+      onStart: () => setSpeakingStatus(`Phát âm (TTS): "${text}"`),
+      onEnd: () => setSpeakingStatus(null),
+      onError: () => setSpeakingStatus(null),
+    });
   };
 
   // Commit and execute speaking & persist to DB
