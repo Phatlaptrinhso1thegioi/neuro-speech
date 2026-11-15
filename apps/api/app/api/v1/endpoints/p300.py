@@ -130,18 +130,20 @@ async def decode_csv_file(
             contents = await file.read()
             if not contents:
                 raise HTTPException(status_code=400, detail="Uploaded file is empty.")
-            res = decode_p300_csv(contents, max_repetitions=repetitions)
+            res = decode_p300_csv(contents, max_repetitions=repetitions, filename=file.filename)
             res["filename"] = file.filename
             return res
         elif preset:
             lib_dir = PROJECT_ROOT / "datasets" / "test_csv_library"
             preset_map = {
-                "benchmark": PROJECT_ROOT / "datasets" / "processed" / "p300_events.csv",
+                "benchmark": lib_dir / "01_international_benchmarks_bnci" / "BNCI_Subj01_Session2_HeldOut_6chars.csv",
                 "vietnamese": lib_dir / "03_vietnamese_clinical_sentences" / "Sentence_TOI_MUON_UONG_NUOC.csv",
             }
             cand = preset_map.get(preset.lower())
             if not cand or not cand.is_file():
-                if (lib_dir / preset).is_file():
+                if (PROJECT_ROOT / "datasets" / "processed" / "p300_events.csv").is_file() and preset.lower() == "benchmark":
+                    cand = PROJECT_ROOT / "datasets" / "processed" / "p300_events.csv"
+                elif (lib_dir / preset).is_file():
                     cand = lib_dir / preset
                 elif (PROJECT_ROOT / "datasets" / "processed" / preset).is_file():
                     cand = PROJECT_ROOT / "datasets" / "processed" / preset
@@ -157,9 +159,11 @@ async def decode_csv_file(
             res["preset"] = preset
             return res
         else:
-            default_csv = PROJECT_ROOT / "datasets" / "processed" / "p300_events.csv"
+            default_csv = PROJECT_ROOT / "datasets" / "test_csv_library" / "01_international_benchmarks_bnci" / "BNCI_Subj01_Session2_HeldOut_6chars.csv"
+            if not default_csv.is_file():
+                default_csv = PROJECT_ROOT / "datasets" / "processed" / "p300_events.csv"
             res = decode_p300_csv(default_csv, max_repetitions=repetitions)
-            res["filename"] = "p300_events.csv (default benchmark)"
+            res["filename"] = default_csv.name
             return res
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Decoding failed: {str(e)}")

@@ -42,7 +42,7 @@ class ReplaySessionManager:
             return sess
 
         # Create source
-        if mode == "synthetic":
+        if mode == "synthetic" or not self.raw_mat_path.exists():
             source = SyntheticSource()
         else:
             source = ReplaySource(raw_mat_path=self.raw_mat_path, session_idx=2)

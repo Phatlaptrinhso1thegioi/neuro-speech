@@ -12,7 +12,12 @@ from apps.api.app.bci.csv_decoder import decode_p300_csv
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 EVENTS_CSV = PROJECT_ROOT / "datasets" / "processed" / "p300_events.csv"
+if not EVENTS_CSV.exists():
+    EVENTS_CSV = PROJECT_ROOT / "datasets" / "test_csv_library" / "01_international_benchmarks_bnci" / "BNCI_Subj01_Session2_HeldOut_6chars.csv"
+
 PHRASE_CSV = PROJECT_ROOT / "datasets" / "processed" / "demo_vietnamese_phrase.csv"
+if not PHRASE_CSV.exists():
+    PHRASE_CSV = PROJECT_ROOT / "datasets" / "test_csv_library" / "03_vietnamese_clinical_sentences" / "Sentence_TOI_MUON_UONG_NUOC.csv"
 
 
 def test_core_csv_decode_events_benchmark():
@@ -60,3 +65,24 @@ def test_api_decode_csv_file_upload():
     assert resp.status_code == 200
     data = resp.json()
     assert data["raw_string"] == "6_C4B5"
+
+
+def test_api_decode_bnci_subj01_session1_calibration_upload():
+    """Tests the exact file that was uploaded in the clinical studio screenshot."""
+    calib_csv = PROJECT_ROOT / "datasets" / "test_csv_library" / "01_international_benchmarks_bnci" / "BNCI_Subj01_Session1_Calibration_6chars.csv"
+    assert calib_csv.exists()
+    client = TestClient(app)
+    with open(calib_csv, "rb") as f:
+        resp = client.post(
+            "/api/v1/p300/decode-csv",
+            files={"file": ("BNCI_Subj01_Session1_Calibration_6chars.csv", f, "text/csv")},
+            data={"repetitions": 8}
+        )
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["status"] == "SUCCESS"
+    assert data["total_characters"] == 6
+    assert data["raw_string"] == "XJAIF2"
+    assert len(data["details"]) == 6
+    assert data["details"][0]["winning_row"] == 4
+    assert data["details"][0]["winning_col"] == 6
